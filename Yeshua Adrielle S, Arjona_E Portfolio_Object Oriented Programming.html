@@ -1,0 +1,1725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>OOP E-Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    /* Dust Grey: #D6D9CE | Soft Blush: #F3DAD8 | Cotton Rose: #F4C3C2 | Soft Blossom: #F1B5CB | Violet: #E88EED */
+    --bg: #D6D9CE;
+    --bg2: #e2e5da;
+    --bg3: #eaeee4;
+    --card: #F3DAD8;
+    --border: rgba(180,120,140,0.18);
+    --accent: #c95c8a;
+    --accent2: #b8489e;
+    --accent3: #a03aab;
+    --text: #3a2030;
+    --muted: #7a5068;
+    --code-bg: #2e1a28;
+    --code-border: rgba(241,181,203,0.25);
+    --radius: 14px;
+    --nav-h: 64px;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: rgba(214,217,206,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--accent2);
+    letter-spacing: -0.5px;
+  }
+  .nav-links { display: flex; gap: 0.25rem; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: 0.4rem 0.85rem;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--text);
+    background: rgba(241,181,203,0.35);
+  }
+  .nav-links a.active { color: var(--accent); }
+
+  /* PAGES */
+  .page { display: none; padding-top: var(--nav-h); min-height: 100vh; opacity: 0; }
+  .page.active { display: block; animation: blurFadeIn 0.45s cubic-bezier(0.22,1,0.36,1) forwards; }
+  @keyframes blurFadeIn {
+    from { opacity: 0; filter: blur(8px); transform: scale(0.98); }
+    to   { opacity: 1; filter: blur(0px); transform: scale(1); }
+  }
+
+  /* HERO */
+  .hero {
+    min-height: calc(100vh - var(--nav-h));
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+  .hero-left { }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent3);
+    background: rgba(232,142,237,0.15);
+    border: 1px solid rgba(232,142,237,0.35);
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    letter-spacing: -1px;
+  }
+  .hero-name span { color: var(--accent); }
+  .hero-sub {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.825rem;
+  }
+  .hero-desc {
+    color: var(--muted);
+    font-size: 0.975rem;
+    max-width: 480px;
+    margin: 1.25rem 0 2rem;
+    line-height: 1.8;
+  }
+  .hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.65rem 1.4rem;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #d96898; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,92,138,0.3); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(180,120,140,0.35);
+  }
+  .btn-ghost:hover { border-color: var(--accent2); color: var(--accent2); transform: translateY(-1px); }
+
+  .hero-right {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .info-card {
+    background: #F4C3C2;
+    border: 1px solid rgba(180,120,140,0.2);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+  }
+  .info-card-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.35rem;
+    font-family: 'DM Mono', monospace;
+  }
+  .info-card-value {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+  }
+  .stat-block {
+    background: #F1B5CB;
+    border: 1px solid rgba(180,120,140,0.2);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent2);
+  }
+  .stat-desc { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* SECTION LAYOUT */
+  .section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 0.2rem;
+  }
+  .section-divider {
+    width: 40px; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    margin-top: 0.5rem;
+  }
+
+  /* ACCORDION */
+  .accordion { display: flex; flex-direction: column; gap: 0.75rem; }
+  .acc-item {
+    background: #F3DAD8;
+    border: 1px solid rgba(180,120,140,0.2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  }
+  .acc-item:hover { box-shadow: 0 4px 16px rgba(180,120,140,0.13); }
+  .acc-item.open { border-color: rgba(184,72,158,0.45); }
+  .acc-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .acc-header-left { display: flex; align-items: center; gap: 0.85rem; }
+  .acc-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .acc-icon.quiz { background: rgba(244,195,194,0.7); }
+  .acc-icon.seatwork { background: rgba(241,181,203,0.6); }
+  .acc-icon.activity { background: rgba(232,142,237,0.2); }
+  .acc-icon.exam { background: rgba(184,72,158,0.12); }
+  .acc-title { font-weight: 500; font-size: 0.95rem; color: var(--text); }
+  .acc-badge {
+    font-size: 0.7rem; font-family: 'DM Mono', monospace;
+    padding: 0.2rem 0.6rem; border-radius: 100px;
+    background: rgba(201,92,138,0.12); color: var(--accent);
+    border: 1px solid rgba(201,92,138,0.3);
+  }
+  .acc-chevron {
+    color: var(--muted);
+    transition: transform 0.25s;
+    font-size: 0.8rem;
+  }
+  .acc-item.open .acc-chevron { transform: rotate(180deg); }
+  .acc-body {
+    display: none;
+    padding: 0 1.5rem 1.5rem;
+    border-top: 1px solid rgba(180,120,140,0.18);
+    padding-top: 1.25rem;
+    animation: accBodyIn 0.25s ease forwards;
+  }
+  @keyframes accBodyIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .acc-item.open .acc-body { display: block; }
+
+  /* QUIZ / Q&A blocks */
+  .qa-block { margin-bottom: 1.5rem; }
+  .qa-q {
+    font-weight: 500; font-size: 0.9rem; color: var(--text);
+    margin-bottom: 0.4rem;
+    display: flex; gap: 0.5rem;
+  }
+  .q-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    background: rgba(201,92,138,0.12);
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .qa-a { font-size: 0.875rem; color: var(--accent2); margin-bottom: 0.3rem; margin-left: 1.8rem; font-weight: 500; }
+  .qa-exp { font-size: 0.825rem; color: var(--muted); margin-left: 1.8rem; line-height: 1.7; }
+
+  /* CODE BLOCK */
+  .code-wrap {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
+  .code-toolbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--code-border);
+    background: rgba(241,181,203,0.08);
+  }
+  .code-lang {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: #F1B5CB;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .code-dots { display: flex; gap: 5px; }
+  .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  pre {
+    padding: 1.25rem 1.25rem;
+    overflow-x: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.75;
+    color: #f3dad8;
+    margin: 0;
+  }
+  .kw { color: #F1B5CB; }
+  .cl { color: #E88EED; }
+  .fn { color: #f4c3c2; }
+  .st { color: #fde8ea; }
+  .cm { color: #7a5570; font-style: italic; }
+  .nu { color: #e8a0cf; }
+
+  /* REFLECTION BOX */
+  .reflection {
+    background: rgba(241,181,203,0.2);
+    border: 1px solid rgba(184,72,158,0.2);
+    border-left: 3px solid var(--accent2);
+    border-radius: 10px;
+    padding: 1.1rem 1.25rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-top: 1rem;
+  }
+  .reflection strong { color: var(--accent2); font-weight: 500; }
+
+  /* LEARNING TAGS */
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+  .tag {
+    font-size: 0.7rem; font-family: 'DM Mono', monospace;
+    padding: 0.25rem 0.6rem; border-radius: 6px;
+    background: rgba(232,142,237,0.15); color: var(--accent3);
+    border: 1px solid rgba(232,142,237,0.3);
+  }
+
+  /* CONTACT */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .contact-item {
+    background: #F4C3C2;
+    border: 1px solid rgba(180,120,140,0.2);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .contact-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(241,181,203,0.5);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .contact-label { font-size: 0.7rem; color: var(--muted); margin-bottom: 0.2rem; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.08em; }
+  .contact-value { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+
+
+  /* PDF EMBED */
+  .pdf-embed-wrap {
+    margin: 1rem 0;
+  }
+  .pdf-embed-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .pdf-embed-label::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--accent2);
+    border-radius: 2px;
+    opacity: 0.6;
+  }
+  .pdf-embed-wrap embed {
+    width: 100%;
+    height: 520px;
+    border-radius: 10px;
+    border: 1px solid rgba(180,120,140,0.25);
+    display: block;
+    background: #fff;
+  }
+  .pdf-filename-hint {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 0.4rem;
+    opacity: 0.7;
+  }
+
+  /* PLACEHOLDER */
+  .placeholder {
+    background: rgba(244,195,194,0.3);
+    border: 2px dashed rgba(201,92,138,0.25);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin: 1rem 0;
+  }
+  .placeholder span { display: block; font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(180,120,140,0.2);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+  }
+
+  /* ── PARTICLE CANVAS ── */
+  #particle-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── PETAL CANVAS ── */
+  #petal-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  * { cursor: none !important; }
+  #cursor-dot {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: #c95c8a;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease, width 0.15s ease, height 0.15s ease, opacity 0.15s;
+    box-shadow: 0 0 10px 3px rgba(201,92,138,0.6), 0 0 22px 6px rgba(184,72,158,0.3);
+  }
+  #cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1.5px solid rgba(201,92,138,0.55);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 99998;
+    transform: translate(-50%, -50%);
+    transition: left 0.12s ease, top 0.12s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s;
+    box-shadow: 0 0 8px rgba(201,92,138,0.2);
+  }
+  body:has(a:hover) #cursor-ring,
+  body:has(button:hover) #cursor-ring,
+  body:has(.btn:hover) #cursor-ring {
+    width: 44px; height: 44px;
+    border-color: rgba(201,92,138,0.9);
+  }
+
+  /* ── CURTAIN OVERLAY ── */
+  #curtain {
+    position: fixed;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, #c95c8a 0%, #b8489e 50%, #a03aab 100%);
+    z-index: 9990;
+    pointer-events: none;
+    transition: none;
+  }
+  #curtain.sweep-in  { transition: left 0.38s cubic-bezier(0.86,0,0.07,1); left: 0; }
+  #curtain.sweep-out { transition: left 0.38s cubic-bezier(0.86,0,0.07,1); left: 100%; }
+
+  /* ── AURORA BACKGROUND ── */
+  #aurora-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .aurora-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.28;
+    animation: auroraFloat linear infinite;
+  }
+  @keyframes auroraFloat {
+    0%   { transform: translate(0,0) scale(1); }
+    33%  { transform: translate(60px,-40px) scale(1.1); }
+    66%  { transform: translate(-40px,50px) scale(0.92); }
+    100% { transform: translate(0,0) scale(1); }
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.62s cubic-bezier(0.22,1,0.36,1), transform 0.62s cubic-bezier(0.22,1,0.36,1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .acc-header:hover .acc-title {
+    color: var(--accent);
+    transition: color 0.2s;
+  }
+
+  /* ── GRADIENT BUTTONS ── */
+  .btn-primary {
+    background: linear-gradient(135deg, #c95c8a 0%, #b8489e 55%, #a03aab 100%) !important;
+    background-size: 200% 200% !important;
+    animation: btnGradShift 4s ease infinite;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.28s cubic-bezier(0.22,1,0.36,1) !important;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #e8709e 0%, #cc5cb2 50%, #b84fc4 100%);
+    opacity: 0;
+    transition: opacity 0.28s ease;
+    border-radius: inherit;
+  }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.03) !important;
+    box-shadow: 0 0 22px 5px rgba(201,92,138,0.6), 0 0 50px 12px rgba(184,72,158,0.28), 0 8px 24px rgba(201,92,138,0.4) !important;
+  }
+  @keyframes btnGradShift {
+    0%,100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+
+  .btn-ghost {
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.28s cubic-bezier(0.22,1,0.36,1) !important;
+  }
+  .btn-ghost::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,92,138,0.12) 0%, rgba(184,72,158,0.18) 50%, rgba(160,58,171,0.12) 100%);
+    opacity: 0;
+    transition: opacity 0.28s ease;
+    border-radius: inherit;
+  }
+  .btn-ghost:hover::before { opacity: 1; }
+  .btn-ghost:hover {
+    border-color: var(--accent2) !important;
+    color: var(--accent2) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 0 16px 3px rgba(184,72,158,0.4), 0 0 36px 8px rgba(160,58,171,0.2) !important;
+  }
+
+  /* ── GRADIENT SECTION HEADERS ── */
+  .section-title {
+    background: linear-gradient(120deg, #3a2030 30%, #b8489e 70%, #a03aab 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-name {
+    background: linear-gradient(120deg, #3a2030 20%, #c95c8a 60%, #a03aab 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-name span {
+    background: linear-gradient(120deg, #c95c8a 0%, #b8489e 50%, #a03aab 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── GRADIENT SECTION DIVIDER (wider + animated) ── */
+  .section-divider {
+    width: 60px !important;
+    height: 4px !important;
+    background: linear-gradient(90deg, #c95c8a, #b8489e, #a03aab, #E88EED, #c95c8a) !important;
+    background-size: 300% 100% !important;
+    animation: dividerFlow 3s linear infinite !important;
+    border-radius: 4px !important;
+  }
+  @keyframes dividerFlow {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 300% 0%; }
+  }
+
+  /* ── GRADIENT ACCENT ON CARDS ON HOVER ── */
+  .acc-item, .info-card, .stat-block, .contact-item {
+    transition: border-color 0.25s, box-shadow 0.25s;
+  }
+  .acc-item:hover, .info-card:hover, .stat-block:hover, .contact-item:hover {
+    border-color: transparent;
+    box-shadow: 0 0 0 1.5px #b8489e, 0 4px 24px rgba(184,72,158,0.18), 0 1px 4px rgba(201,92,138,0.1);
+  }
+
+  /* ── GRADIENT TAGS & BADGES ── */
+  .hero-tag {
+    background: linear-gradient(135deg, rgba(201,92,138,0.15), rgba(160,58,171,0.2)) !important;
+    border: 1px solid rgba(184,72,158,0.4) !important;
+  }
+  .stat-num {
+    background: linear-gradient(135deg, #c95c8a, #a03aab);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* keep page content above aurora/petals */
+  nav, .page, footer { position: relative; z-index: 2; }
+</style>
+</head>
+<body>
+
+<div id="aurora-bg"></div>
+<canvas id="petal-canvas"></canvas>
+<canvas id="particle-canvas"></canvas>
+<div id="curtain"></div>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <div class="nav-logo">OOP E-Portfolio</div>
+  <div class="nav-links">
+    <a href="#" class="active" onclick="showPage('home',this)">Home</a>
+    <a href="#" onclick="showPage('midterm',this)">Midterm</a>
+    <a href="#" onclick="showPage('final',this)">Final</a>
+    <a href="#" onclick="showPage('contact',this)">Contact</a>
+  </div>
+</nav>
+
+<!-- ===== HOME ===== -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-left">
+      <span class="hero-tag">&#10003; Object-Oriented Programming</span>
+      <h1 class="hero-name">Yeshua Adrielle <span>S. Arjona</span></h1>
+      <p class="hero-sub">BSIT &nbsp;|&nbsp; Section 2-4 &nbsp;|&nbsp; AY 2025–2026</p>
+      <p class="hero-desc">
+        This e-portfolio presents my Midterm Project in Object-Oriented Programming using HTML. It showcases my activities and assignments that demonstrate my understanding of OOP concepts in Java.
+      </p>
+      <div class="hero-btns">
+        <a class="btn btn-primary" href="#" onclick="showPage('midterm',document.querySelectorAll('.nav-links a')[1])">View Midterm ↗</a>
+        <a class="btn btn-ghost" href="#" onclick="showPage('contact',document.querySelectorAll('.nav-links a')[3])">Contact Me</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="info-card">
+        <div class="info-card-label">Course</div>
+        <div class="info-card-value">Object-Oriented Programming (Java)</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">School</div>
+        <div class="info-card-value">Polytechnic University of the Philippines</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">Instructor</div>
+        <div class="info-card-value">Severino M. Bedis Jr.</div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-block">
+          <div class="stat-num" style="font-size:1.1rem;line-height:1.2">F2F Quiz &amp; Activities</div>
+          <div class="stat-desc">Face to Face</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num" style="font-size:1.1rem;line-height:1.2">About Me &amp; Assignment</div>
+          <div class="stat-desc">Introduction</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num" style="font-size:1.1rem;line-height:1.2">Midterm Activities</div>
+          <div class="stat-desc">5 Activities</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num" style="font-size:1.1rem;line-height:1.2">Midterm Exam</div>
+          <div class="stat-desc">Reflection</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== MIDTERM ===== -->
+<div class="page" id="page-midterm">
+
+
+  <!-- FACE TO FACE QUIZ & ACTIVITIES -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">// 01 &nbsp; Midterm</div>
+        <h2 class="section-title">Face to Face Quiz &amp; Activities</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="accordion">
+
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon quiz">📝</div>
+            <span class="acc-title">Face to Face Quiz #1</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Quiz</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="reflection">
+            <strong>Reflection:</strong> This quiz is all about introduction to Java, program structures, Java fundamentals, and operators. Taking this quiz made my understanding of these lessons deeper and clearer. It also helped me identify which topics I already understand and which ones I still need to review. Through this, I became more confident in answering basic Java questions and applying concepts correctly.
+          </div>
+          <div class="tags">
+            <span class="tag">Java Intro</span>
+            <span class="tag">Program Structure</span>
+            <span class="tag">Java Fundamentals</span>
+            <span class="tag">Operators</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon seatwork">✏️</div>
+            <span class="acc-title">Face to Face Seatwork #1 — Tracing</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Seatwork</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="reflection">
+            <strong>Reflection:</strong> Manually tracing on paper is exhausting but fun, and it can also be a bit confusing at times. However, it helped me understand how a program executes step by step. I became more careful in following the flow of values and conditions. This activity improved my logical thinking and attention to detail.
+          </div>
+          <div class="tags">
+            <span class="tag">Tracing</span>
+            <span class="tag">Program Flow</span>
+            <span class="tag">Logical Thinking</span>
+            <span class="tag">Step-by-Step Execution</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon seatwork">📄</div>
+            <span class="acc-title">Face to Face Seatwork #2 — Coding in Paper</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Seatwork</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="reflection">
+            <strong>Reflection:</strong> Coding on paper makes you memorize the Java structure faster. It trained me to recall syntax without relying on a computer or IDE. Although it was challenging, it helped me become more disciplined in writing correct code. This activity also strengthened my understanding of proper code structure and formatting.
+          </div>
+          <div class="tags">
+            <span class="tag">Paper Coding</span>
+            <span class="tag">Syntax Recall</span>
+            <span class="tag">Code Structure</span>
+            <span class="tag">Discipline</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ABOUT ME & ASSIGNMENT -->
+  <div class="section" style="padding-top:0">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">// 02 &nbsp; Midterm</div>
+        <h2 class="section-title">About Me &amp; Assignment</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="accordion">
+
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon activity">👤</div>
+            <span class="acc-title">About Me</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Intro</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="reflection" style="margin-top:0">
+            I realized that my first impression of Java being difficult was true, especially since coding is not my strongest skill and it feels similar to C in being very technical. However, through the lessons and activities, I was able to understand the basics and build a strong foundation in Java, which made the subject more manageable over time. I also learned that consistent practice is important to improve in programming. This experience helped me become more patient and confident when solving coding problems.
+          </div>
+          <div class="pdf-embed-wrap" style="margin-top:1rem">
+            <div class="pdf-embed-label">About Me — Document</div>
+            <embed src="about-me.pdf" type="application/pdf">
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon activity">📌</div>
+            <span class="acc-title">Midterm Assignment #1 — Introduction to Java</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Java</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="pdf-embed-wrap">
+          <div class="pdf-embed-label">Midterm Assignment #1</div>
+          <embed src="assignment1.pdf" type="application/pdf">
+        </div>
+          <div class="reflection">In this assignment, I learned what Java is and why it is widely used, including its key features and advantages. I also understood how Java achieves platform independence through the JVM, and I became familiar with the main components of a Java program, as well as the differences between JDK, JRE, and JVM. This gave me a clear overview of how Java works as a whole. It also prepared me for the more advanced topics in the next activities.</div>
+          <div class="tags">
+            <span class="tag">JVM</span>
+            <span class="tag">JDK vs JRE</span>
+            <span class="tag">Platform Independence</span>
+            <span class="tag">Java Basics</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ACTIVITIES -->
+  <div class="section" style="padding-top:0">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">// 03 &nbsp; Midterm</div>
+        <h2 class="section-title">Activities</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="accordion">
+
+      <!-- Activity 1: Variables -->
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon activity">🔤</div>
+            <span class="acc-title">Midterm Activity #1 — Variables</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Java</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="pdf-embed-wrap">
+          <div class="pdf-embed-label">Midterm Activity #1 — Variables</div>
+          <embed src="activity1-variables.pdf" type="application/pdf">
+        </div>
+          <div class="reflection"><strong>Reflection:</strong> This activity helped me understand the different types of variables, where they are stored, and how they are used in a program. It also improved my tracing skills, allowing me to follow how values change during execution. I became more careful in assigning and updating values correctly. This activity strengthened my understanding of how data is handled in Java.</div>
+          <div class="tags">
+            <span class="tag">Variables</span>
+            <span class="tag">Data Types</span>
+            <span class="tag">Tracing</span>
+            <span class="tag">Value Assignment</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity 2: Operators -->
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon activity">➕</div>
+            <span class="acc-title">Midterm Activity #2 — Operators</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Java</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <p style="font-size:0.875rem;color:var(--muted);margin-bottom:0.75rem;">Demonstrates bitwise, assignment, and ternary operators in Java through three separate programs.</p>
+
+          <p style="font-size:0.8rem;font-family:'DM Mono',monospace;color:var(--accent2);margin-bottom:0.5rem;">Bitwise.java</p>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <div class="code-dots"><span class="code-dot dot-r"></span><span class="code-dot dot-y"></span><span class="code-dot dot-g"></span></div>
+              <span class="code-lang">Java</span>
+            </div>
+<pre><span class="kw">public class</span> <span class="cl">Bitwise</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+        <span class="kw">int</span> x = <span class="nu">10</span>;
+        <span class="kw">int</span> y = <span class="nu">5</span>;
+
+        <span class="kw">boolean</span> out1 = (x &amp; x) != <span class="nu">0</span>;
+        <span class="kw">int</span> out2 = x &amp; x;
+        <span class="kw">boolean</span> out3 = (x &amp; y) != <span class="nu">0</span>;
+        <span class="kw">int</span> out4 = x | y;
+
+        System.out.<span class="fn">println</span>(out1);
+        System.out.<span class="fn">println</span>(out2);
+        System.out.<span class="fn">println</span>(out3);
+        System.out.<span class="fn">println</span>(out4);
+    }
+}</pre>
+          </div>
+
+          <p style="font-size:0.8rem;font-family:'DM Mono',monospace;color:var(--accent2);margin-bottom:0.5rem;margin-top:1rem;">Assignment.java</p>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <div class="code-dots"><span class="code-dot dot-r"></span><span class="code-dot dot-y"></span><span class="code-dot dot-g"></span></div>
+              <span class="code-lang">Java</span>
+            </div>
+<pre><span class="kw">public class</span> <span class="cl">Assignment</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+        <span class="kw">int</span> num = <span class="nu">95</span>;
+        num += <span class="nu">25</span>;
+        System.out.<span class="fn">println</span>(<span class="st">"Addition: "</span> + num);
+
+        num = <span class="nu">95</span>;
+        num -= <span class="nu">25</span>;
+        System.out.<span class="fn">println</span>(<span class="st">"Subtraction: "</span> + num);
+
+        num = <span class="nu">12</span>;
+        num *= <span class="nu">12</span>;
+        System.out.<span class="fn">println</span>(<span class="st">"Multiplication: "</span> + num);
+
+        num = <span class="nu">96</span>;
+        num /= <span class="nu">6</span>;
+        System.out.<span class="fn">println</span>(<span class="st">"Division: "</span> + num);
+    }
+}</pre>
+          </div>
+
+          <p style="font-size:0.8rem;font-family:'DM Mono',monospace;color:var(--accent2);margin-bottom:0.5rem;margin-top:1rem;">Ternary.java</p>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <div class="code-dots"><span class="code-dot dot-r"></span><span class="code-dot dot-y"></span><span class="code-dot dot-g"></span></div>
+              <span class="code-lang">Java</span>
+            </div>
+<pre><span class="kw">public class</span> <span class="cl">Ternary</span> {
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+        <span class="kw">int</span> p = <span class="nu">25</span>;
+        <span class="kw">int</span> q = <span class="nu">30</span>;
+
+        <span class="kw">boolean</span> out1 = (p &lt; q) ? <span class="kw">true</span> : <span class="kw">false</span>;
+        <span class="kw">boolean</span> out2 = (p == q) ? <span class="kw">true</span> : <span class="kw">false</span>;
+        <span class="kw">int</span> out3 = (p &lt; q) ? p : q;
+        <span class="kw">int</span> out4 = (p &gt; q) ? p : q;
+
+        System.out.<span class="fn">println</span>(out1);
+        System.out.<span class="fn">println</span>(out2);
+        System.out.<span class="fn">println</span>(out3);
+        System.out.<span class="fn">println</span>(out4);
+    }
+}</pre>
+          </div>
+
+          <div class="pdf-embed-wrap">
+          <div class="pdf-embed-label">Midterm Activity #2 — Operators</div>
+          <embed src="activity2-operators.pdf" type="application/pdf">
+        </div>
+          <div class="reflection"><strong>Reflection:</strong> Here, I learned about the different types of operators and how to use them properly in expressions. The tracing exercises, especially during face-to-face activities, helped me apply these operators and strengthened my logical thinking. I also learned how operators affect the flow and result of a program. This made me more confident in solving computational problems.</div>
+          <div class="tags">
+            <span class="tag">Bitwise Operators</span>
+            <span class="tag">Assignment Operators</span>
+            <span class="tag">Ternary Operator</span>
+            <span class="tag">Expressions</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity 3: ATM with Transfer Feature -->
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon activity">🏧</div>
+            <span class="acc-title">Midterm Activity #3 — ATM with Transfer Feature</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Java</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <p style="font-size:0.875rem;color:var(--muted);margin-bottom:0.75rem;">A menu-driven ATM console app with check balance, deposit, and withdrawal features including input validation and a withdrawal limit.</p>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <div class="code-dots"><span class="code-dot dot-r"></span><span class="code-dot dot-y"></span><span class="code-dot dot-g"></span></div>
+              <span class="code-lang">Java</span>
+            </div>
+<pre><span class="kw">package</span> me.YeshuaArjona;
+<span class="kw">import</span> java.util.Scanner;
+<span class="kw">public class</span> <span class="cl">BSIT2_4_Arjona_YeshuaAdrielle_MidtermActivity3ATMwithTransferFeature</span> {
+
+    <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+        Scanner scanner = <span class="kw">new</span> <span class="cl">Scanner</span>(System.in);
+        <span class="kw">double</span> balance = <span class="nu">9000.00</span>;
+        <span class="kw">int</span> choice;
+        <span class="kw">do</span> {
+            System.out.<span class="fn">println</span>(<span class="st">"\n===== ATM MENU ====="</span>);
+            System.out.<span class="fn">println</span>(<span class="st">"1. Check Balance"</span>);
+            System.out.<span class="fn">println</span>(<span class="st">"2. Deposit"</span>);
+            System.out.<span class="fn">println</span>(<span class="st">"3. Withdraw"</span>);
+            System.out.<span class="fn">println</span>(<span class="st">"4. Exit"</span>);
+            System.out.<span class="fn">print</span>(<span class="st">"Enter your choice: "</span>);
+            choice = scanner.<span class="fn">nextInt</span>();
+            <span class="kw">switch</span> (choice) {
+                <span class="kw">case</span> <span class="nu">1</span>:
+                    System.out.<span class="fn">println</span>(<span class="st">"\n----- Account Balance -----"</span>);
+                    System.out.<span class="fn">printf</span>(<span class="st">"  Current Balance: PHP %.2f%n"</span>, balance);
+                    System.out.<span class="fn">println</span>(<span class="st">"---------------------------"</span>);
+                    <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nu">2</span>:
+                    System.out.<span class="fn">print</span>(<span class="st">"\nEnter deposit amount: PHP "</span>);
+                    <span class="kw">double</span> deposit = scanner.<span class="fn">nextDouble</span>();
+                    <span class="kw">if</span> (deposit &lt;= <span class="nu">0</span>) {
+                        System.out.<span class="fn">println</span>(<span class="st">"Invalid amount. Please enter a positive value."</span>);
+                    } <span class="kw">else</span> {
+                        balance += deposit;
+                        System.out.<span class="fn">println</span>(<span class="st">"\nDeposit Successful!"</span>);
+                        System.out.<span class="fn">printf</span>(<span class="st">"  Amount Deposited : PHP %.2f%n"</span>, deposit);
+                        System.out.<span class="fn">printf</span>(<span class="st">"  New Balance      : PHP %.2f%n"</span>, balance);
+                    }
+                    <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nu">3</span>:
+                    System.out.<span class="fn">print</span>(<span class="st">"\nEnter withdrawal amount: PHP "</span>);
+                    <span class="kw">double</span> withdraw = scanner.<span class="fn">nextDouble</span>();
+                    <span class="kw">if</span> (withdraw &lt;= <span class="nu">0</span>) {
+                        System.out.<span class="fn">println</span>(<span class="st">"Invalid amount. Please enter a positive value."</span>);
+                    } <span class="kw">else if</span> (withdraw &gt; <span class="nu">3000</span>) {
+                        System.out.<span class="fn">println</span>(<span class="st">"\nWithdrawal Limit Exceeded"</span>);
+                    } <span class="kw">else if</span> (withdraw &gt; balance) {
+                        System.out.<span class="fn">println</span>(<span class="st">"\nInsufficient Balance."</span>);
+                        System.out.<span class="fn">printf</span>(<span class="st">"Your current balance is PHP %.2f%n"</span>, balance);
+                    } <span class="kw">else</span> {
+                        balance -= withdraw;
+                        System.out.<span class="fn">println</span>(<span class="st">"\nWithdrawal Successful!"</span>);
+                        System.out.<span class="fn">printf</span>(<span class="st">"  Amount Withdrawn  : PHP %.2f%n"</span>, withdraw);
+                        System.out.<span class="fn">printf</span>(<span class="st">"  Remaining Balance : PHP %.2f%n"</span>, balance);
+                    }
+                    <span class="kw">break</span>;
+                <span class="kw">case</span> <span class="nu">4</span>:
+                    System.out.<span class="fn">println</span>(<span class="st">"Bye po!!!"</span>);
+                    <span class="kw">break</span>;
+                <span class="kw">default</span>:
+                    System.out.<span class="fn">println</span>(<span class="st">"Invalid choice. Please enter 1 to 4 only."</span>);
+                    <span class="kw">break</span>;
+            }
+        } <span class="kw">while</span> (choice != <span class="nu">4</span>);
+        scanner.<span class="fn">close</span>();
+    }
+}</pre>
+          </div>
+          <div class="pdf-embed-wrap">
+          <div class="pdf-embed-label">Midterm Activity #3 — ATM</div>
+          <embed src="activity3-atm.pdf" type="application/pdf">
+        </div>
+          <div class="reflection"><strong>Reflection:</strong> In this activity, I learned how to use user input through the Scanner and apply switch-case statements to control program flow. I found this activity enjoyable because it simulated a real-life system, making coding more practical and engaging. It helped me understand how programs interact with users. I also improved my skills in organizing conditions and menu-driven programs.</div>
+          <div class="tags">
+            <span class="tag">do-while Loop</span>
+            <span class="tag">switch Statement</span>
+            <span class="tag">Input Validation</span>
+            <span class="tag">Scanner</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity 4: Student Library Borrowing System -->
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon activity">📚</div>
+            <span class="acc-title">Midterm Activity #4 — Student Library Borrowing System with Penalty Counter</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Java</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <p style="font-size:0.875rem;color:var(--muted);margin-bottom:0.75rem;">A student payment system with tuition fee management, discount application for scholars, and transaction tracking.</p>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <div class="code-dots"><span class="code-dot dot-r"></span><span class="code-dot dot-y"></span><span class="code-dot dot-g"></span></div>
+              <span class="code-lang">Java</span>
+            </div>
+<pre><span class="kw">package</span> me.YeshuaArjona;
+<span class="kw">import</span> java.util.Scanner;
+<span class="kw">public class</span> <span class="cl">StudentPaymentSystemArjona</span> {
+   <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+       Scanner scanner = <span class="kw">new</span> <span class="cl">Scanner</span>(System.in);
+       String studentName;
+       String studentID;
+       <span class="kw">double</span> tuitionFee;
+       <span class="kw">int</span> choice;
+       <span class="kw">int</span> transaction = <span class="nu">0</span>;
+       <span class="kw">boolean</span> discountApplied = <span class="kw">false</span>;
+
+       System.out.<span class="fn">print</span>(<span class="st">"Enter Student Name: "</span>);
+       studentName = scanner.<span class="fn">nextLine</span>();
+       System.out.<span class="fn">print</span>(<span class="st">"Enter Student ID: "</span>);
+       studentID = scanner.<span class="fn">nextLine</span>();
+       System.out.<span class="fn">print</span>(<span class="st">"Enter Total Tuition Fee: "</span>);
+       tuitionFee = scanner.<span class="fn">nextDouble</span>();
+
+       <span class="kw">do</span> {
+           System.out.<span class="fn">println</span>(<span class="st">"\n===== PAYMENT MENU ====="</span>);
+           System.out.<span class="fn">println</span>(<span class="st">"1. Pay Tuition"</span>);
+           System.out.<span class="fn">println</span>(<span class="st">"2. Check Balance"</span>);
+           System.out.<span class="fn">println</span>(<span class="st">"3. Apply Discount"</span>);
+           System.out.<span class="fn">println</span>(<span class="st">"4. Exit"</span>);
+           System.out.<span class="fn">print</span>(<span class="st">"Enter your choice: "</span>);
+           choice = scanner.<span class="fn">nextInt</span>();
+           <span class="kw">switch</span> (choice) {
+               <span class="kw">case</span> <span class="nu">1</span>:
+                   <span class="kw">if</span> (tuitionFee == <span class="nu">0</span>) {
+                       System.out.<span class="fn">println</span>(<span class="st">"No remaining balance."</span>);
+                   } <span class="kw">else</span> {
+                       System.out.<span class="fn">print</span>(<span class="st">"Enter payment amount: "</span>);
+                       <span class="kw">double</span> payment = scanner.<span class="fn">nextDouble</span>();
+                       <span class="kw">if</span> (payment &gt; tuitionFee) {
+                           System.out.<span class="fn">println</span>(<span class="st">"Invalid Payment"</span>);
+                       } <span class="kw">else</span> {
+                           tuitionFee -= payment;
+                           transaction++;
+                           System.out.<span class="fn">println</span>(<span class="st">"Payment successful."</span>);
+                           System.out.<span class="fn">printf</span>(<span class="st">"Remaining Balance: %.2f%n"</span>, tuitionFee);
+                       }
+                   }
+                   <span class="kw">break</span>;
+               <span class="kw">case</span> <span class="nu">2</span>:
+                   System.out.<span class="fn">printf</span>(<span class="st">"Remaining Balance: %.2f%n"</span>, tuitionFee);
+                   transaction++;
+                   <span class="kw">break</span>;
+               <span class="kw">case</span> <span class="nu">3</span>:
+                   <span class="kw">if</span> (discountApplied) {
+                       System.out.<span class="fn">println</span>(<span class="st">"Discount already applied."</span>);
+                   } <span class="kw">else</span> {
+                       System.out.<span class="fn">println</span>(<span class="st">"Student Type:"</span>);
+                       System.out.<span class="fn">println</span>(<span class="st">"1. Regular Student"</span>);
+                       System.out.<span class="fn">println</span>(<span class="st">"2. Scholar"</span>);
+                       System.out.<span class="fn">print</span>(<span class="st">"Enter your choice: "</span>);
+                       <span class="kw">int</span> studtype = scanner.<span class="fn">nextInt</span>();
+                       <span class="kw">if</span> (studtype == <span class="nu">2</span>) {
+                           tuitionFee -= tuitionFee * <span class="nu">0.20</span>;
+                           discountApplied = <span class="kw">true</span>;
+                           System.out.<span class="fn">println</span>(<span class="st">"20% discount applied."</span>);
+                           System.out.<span class="fn">printf</span>(<span class="st">"New Balance: %.2f%n"</span>, tuitionFee);
+                       } <span class="kw">else</span> {
+                           System.out.<span class="fn">println</span>(<span class="st">"No discount applied."</span>);
+                       }
+                   }
+                   <span class="kw">break</span>;
+               <span class="kw">case</span> <span class="nu">4</span>:
+                   System.out.<span class="fn">println</span>(<span class="st">"Student Name: "</span> + studentName);
+                   System.out.<span class="fn">println</span>(<span class="st">"Total Transactions: "</span> + transaction);
+                   System.out.<span class="fn">printf</span>(<span class="st">"Final Balance: %.2f%n"</span>, tuitionFee);
+                   <span class="kw">break</span>;
+               <span class="kw">default</span>:
+                   System.out.<span class="fn">println</span>(<span class="st">"Invalid choice."</span>);
+                   <span class="kw">break</span>;
+           }
+       } <span class="kw">while</span> (choice != <span class="nu">4</span>);
+       scanner.<span class="fn">close</span>();
+   }
+}</pre>
+          </div>
+          <div class="pdf-embed-wrap">
+          <div class="pdf-embed-label">Midterm Activity #4 — Student Library</div>
+          <embed src="activity4-library.pdf" type="application/pdf">
+        </div>
+          <div class="reflection"><strong>Reflection:</strong> This task allowed me to practice using do-while loops together with switch-case statements. It was similar to our face-to-face coding exercises, and I was able to reuse and improve my previous code while understanding how systems can manage transactions and penalties. I learned how loops help repeat processes efficiently. This activity also enhanced my problem-solving and debugging skills.</div>
+          <div class="tags">
+            <span class="tag">do-while Loop</span>
+            <span class="tag">Boolean Flags</span>
+            <span class="tag">Transaction Tracking</span>
+            <span class="tag">Discount Logic</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity 5: Personal Expense Tracker -->
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon activity">💸</div>
+            <span class="acc-title">Midterm Activity #5 — Personal Expense Tracker</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Java</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <p style="font-size:0.875rem;color:var(--muted);margin-bottom:0.75rem;">A modular expense tracker using static methods to calculate totals, check budget status, and display personalized summaries.</p>
+          <div class="code-wrap">
+            <div class="code-toolbar">
+              <div class="code-dots"><span class="code-dot dot-r"></span><span class="code-dot dot-y"></span><span class="code-dot dot-g"></span></div>
+              <span class="code-lang">Java</span>
+            </div>
+<pre><span class="kw">package</span> me.YeshuaArjona;
+<span class="kw">import</span> java.util.Scanner;
+<span class="kw">public class</span> <span class="cl">ExpenseTrackerArjona</span> {
+
+   <span class="kw">public static void</span> <span class="fn">displayProgramTitle</span>() {
+       System.out.<span class="fn">println</span>(<span class="st">"Personal Expense Tracker"</span>);
+   }
+   <span class="kw">public static double</span> <span class="fn">calculateTotalExpenses</span>(<span class="kw">double</span> food, <span class="kw">double</span> transportation, <span class="kw">double</span> otherExpenses) {
+       <span class="kw">return</span> food + transportation + otherExpenses;
+   }
+   <span class="kw">public static</span> String <span class="fn">checkBudget</span>(<span class="kw">double</span> totalExpenses, <span class="kw">double</span> budget) {
+       <span class="kw">if</span> (totalExpenses &gt; budget) {
+           <span class="kw">return</span> <span class="st">"You exceeded your budget by PHP "</span>
+                  + String.<span class="fn">format</span>(<span class="st">"%.2f"</span>, (totalExpenses - budget));
+       } <span class="kw">else</span> {
+           <span class="kw">return</span> <span class="st">"You are within your budget."</span>;
+       }
+   }
+   <span class="kw">public static void</span> <span class="fn">displaySummary</span>(<span class="kw">double</span> totalExpenses, String budgetStatus, <span class="kw">double</span> budget) {
+       System.out.<span class="fn">println</span>(<span class="st">"\nExpense Summary"</span>);
+       System.out.<span class="fn">printf</span>(<span class="st">"Total Expenses : PHP %.2f%n"</span>, totalExpenses);
+       System.out.<span class="fn">printf</span>(<span class="st">"Budget         : PHP %.2f%n"</span>, budget);
+       System.out.<span class="fn">println</span>(<span class="st">"Budget Status  : "</span> + budgetStatus);
+       <span class="kw">double</span> remaining = budget - totalExpenses;
+       <span class="kw">if</span> (remaining &gt;= <span class="nu">0</span>) {
+           System.out.<span class="fn">printf</span>(<span class="st">"Remaining      : PHP %.2f%n"</span>, remaining);
+       } <span class="kw">else</span> {
+           System.out.<span class="fn">printf</span>(<span class="st">"Deficit        : PHP %.2f%n"</span>, Math.<span class="fn">abs</span>(remaining));
+       }
+   }
+   <span class="kw">public static void</span> <span class="fn">displayPersonalizedMessage</span>(String name, <span class="kw">double</span> totalExpenses, <span class="kw">double</span> budget) {
+       System.out.<span class="fn">println</span>(<span class="st">"\nMessage for "</span> + name);
+       <span class="kw">if</span> (totalExpenses &lt;= budget) {
+           System.out.<span class="fn">println</span>(<span class="st">"Congrats! Di ka magastos."</span>);
+       } <span class="kw">else</span> {
+           System.out.<span class="fn">println</span>(<span class="st">"Hala! Sumobra ka na."</span>);
+       }
+   }
+   <span class="kw">public static void</span> <span class="fn">main</span>(String[] args) {
+       Scanner scanner = <span class="kw">new</span> <span class="cl">Scanner</span>(System.in);
+       <span class="fn">displayProgramTitle</span>();
+       System.out.<span class="fn">print</span>(<span class="st">"\nEnter your name: "</span>);
+       String name = scanner.<span class="fn">nextLine</span>();
+       System.out.<span class="fn">print</span>(<span class="st">"Enter your budget (PHP): "</span>);
+       <span class="kw">double</span> budget = scanner.<span class="fn">nextDouble</span>();
+       System.out.<span class="fn">println</span>(<span class="st">"\nEnter your expenses:"</span>);
+       System.out.<span class="fn">print</span>(<span class="st">"  Food           : PHP "</span>);
+       <span class="kw">double</span> food = scanner.<span class="fn">nextDouble</span>();
+       System.out.<span class="fn">print</span>(<span class="st">"  Transportation : PHP "</span>);
+       <span class="kw">double</span> transportation = scanner.<span class="fn">nextDouble</span>();
+       System.out.<span class="fn">print</span>(<span class="st">"  Other Expenses : PHP "</span>);
+       <span class="kw">double</span> otherExpenses = scanner.<span class="fn">nextDouble</span>();
+       <span class="kw">double</span> total = <span class="fn">calculateTotalExpenses</span>(food, transportation, otherExpenses);
+       String budgetStatus = <span class="fn">checkBudget</span>(total, budget);
+       <span class="fn">displaySummary</span>(total, budgetStatus, budget);
+       <span class="fn">displayPersonalizedMessage</span>(name, total, budget);
+       scanner.<span class="fn">close</span>();
+   }
+}</pre>
+          </div>
+          <div class="pdf-embed-wrap">
+          <div class="pdf-embed-label">Midterm Activity #5 — Personal Expense Tracker</div>
+          <embed src="activity5-expense.pdf" type="application/pdf">
+        </div>
+          <div class="reflection"><strong>Reflection:</strong> In this activity, I learned about methods and modular programming by creating an expense tracker. I was able to relate methods to functions in C and Python, which helped me better understand how to organize code and make programs more efficient and reusable. I realized the importance of breaking programs into smaller parts. This made my code cleaner, easier to understand, and easier to maintain.</div>
+          <div class="tags">
+            <span class="tag">Static Methods</span>
+            <span class="tag">Modular Design</span>
+            <span class="tag">String.format()</span>
+            <span class="tag">Math.abs()</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- MIDTERM EXAM -->
+  <div class="section" style="padding-top:0">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">// 04 &nbsp; Midterm</div>
+        <h2 class="section-title">Midterm Exam</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="accordion">
+      <div class="acc-item">
+        <div class="acc-header" onclick="toggleAcc(this)">
+          <div class="acc-header-left">
+            <div class="acc-icon exam">📋</div>
+            <span class="acc-title">Midterm Exam — Reflection</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span class="acc-badge">Exam</span>
+            <span class="acc-chevron">▼</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          <div class="reflection">
+            <strong>Exam Reflection:</strong><br/><br/>
+            I was slightly unprepared for the exam since I had many subjects to review at the same time. I had a hard time with the tracing part, and I forgot some parts in the coding section, which made it more challenging. Overall, I am still glad that I was able to show what I learned throughout the midterms. Despite the difficulties, I realized which areas I need to improve, especially in tracing and recalling syntax. This experience motivated me to study better and manage my time more effectively for future exams.
+          </div>
+          <div class="tags">
+            <span class="tag">Tracing</span>
+            <span class="tag">Coding</span>
+            <span class="tag">Exam Reflection</span>
+            <span class="tag">Time Management</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FINAL ===== -->
+<div class="page" id="page-final">
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">// Final Term</div>
+        <h2 class="section-title">Final Portfolio</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="placeholder" style="padding:4rem 2rem">
+      <span>🚧</span>
+      <strong style="display:block;font-size:1rem;color:var(--muted);margin-bottom:0.5rem">Coming Soon</strong>
+      Final term content will be added here — quizzes, seatwork, activities, and exam outputs.
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONTACT ===== -->
+<div class="page" id="page-contact">
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">// Get in Touch</div>
+        <h2 class="section-title">Contact</h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:2rem;">Feel free to reach out for collaboration, questions, or feedback about this portfolio.</p>
+    <div class="contact-grid">
+      <div class="contact-item">
+        <div class="contact-icon">👤</div>
+        <div>
+          <div class="contact-label">Full Name</div>
+          <div class="contact-value">Yeshua Adrielle S. Arjona</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">yesharjona123@gmail.com</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🏫</div>
+        <div>
+          <div class="contact-label">School &amp; Section</div>
+          <div class="contact-value">Polytechnic University of the Philippines — Section 2-4</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📅</div>
+        <div>
+          <div class="contact-label">Academic Year</div>
+          <div class="contact-value">AY 2025–2026, 2nd Semester</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  &lt;/&gt; Built with ❤ for OOP Class &nbsp;·&nbsp; Object-Oriented Programming Portfolio
+</footer>
+
+<script>
+  /* ═══════════════════════════════════════════
+     AURORA BACKGROUND — shifting pastel orbs
+  ═══════════════════════════════════════════ */
+  (function() {
+    const bg = document.getElementById('aurora-bg');
+    const orbs = [
+      { w:520, h:420, color:'#F1B5CB', top:'5%',  left:'-8%',  dur:'18s' },
+      { w:480, h:380, color:'#E88EED', top:'30%', left:'60%',  dur:'24s' },
+      { w:560, h:440, color:'#c95c8a', top:'60%', left:'10%',  dur:'21s' },
+      { w:400, h:320, color:'#b8489e', top:'10%', left:'70%',  dur:'16s' },
+      { w:460, h:360, color:'#F4C3C2', top:'70%', left:'55%',  dur:'28s' },
+    ];
+    orbs.forEach((o, i) => {
+      const d = document.createElement('div');
+      d.className = 'aurora-orb';
+      d.style.cssText = `width:${o.w}px;height:${o.h}px;background:${o.color};top:${o.top};left:${o.left};animation-duration:${o.dur};animation-delay:-${i*3.5}s`;
+      bg.appendChild(d);
+    });
+  })();
+
+  /* ═══════════════════════════════════════════
+     FALLING PETALS — canvas-based sakura petals
+  ═══════════════════════════════════════════ */
+  (function() {
+    const pc = document.getElementById('petal-canvas');
+    const px = pc.getContext('2d');
+    const PETAL_COLORS = ['#F4C3C2','#F1B5CB','#E88EED','#c95c8a','#F3DAD8','#fde8ea'];
+    let petals = [];
+
+    function resizePetal() { pc.width = innerWidth; pc.height = innerHeight; }
+    resizePetal();
+    window.addEventListener('resize', resizePetal);
+
+    function makePetal() {
+      return {
+        x: Math.random() * innerWidth,
+        y: -12,
+        size: 4 + Math.random() * 7,
+        color: PETAL_COLORS[Math.floor(Math.random() * PETAL_COLORS.length)],
+        speedY: 0.6 + Math.random() * 1.1,
+        speedX: (Math.random() - 0.5) * 0.7,
+        rot: Math.random() * Math.PI * 2,
+        rotSpeed: (Math.random() - 0.5) * 0.04,
+        sway: Math.random() * Math.PI * 2,
+        swaySpeed: 0.012 + Math.random() * 0.015,
+        alpha: 0.55 + Math.random() * 0.4,
+      };
+    }
+
+    for (let i = 0; i < 28; i++) {
+      const p = makePetal();
+      p.y = Math.random() * innerHeight;
+      petals.push(p);
+    }
+
+    function drawPetal(p) {
+      px.save();
+      px.translate(p.x, p.y);
+      px.rotate(p.rot);
+      px.globalAlpha = p.alpha;
+      px.fillStyle = p.color;
+      px.beginPath();
+      px.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
+      px.fill();
+      px.restore();
+    }
+
+    function tickPetals() {
+      px.clearRect(0, 0, pc.width, pc.height);
+      petals.forEach(p => {
+        p.sway += p.swaySpeed;
+        p.x += p.speedX + Math.sin(p.sway) * 0.55;
+        p.y += p.speedY;
+        p.rot += p.rotSpeed;
+        if (p.y > innerHeight + 16) { Object.assign(p, makePetal()); }
+        drawPetal(p);
+      });
+      requestAnimationFrame(tickPetals);
+    }
+    tickPetals();
+
+    setInterval(() => {
+      if (petals.length < 38) petals.push(makePetal());
+    }, 800);
+  })();
+
+  /* ═══════════════════════════════════════════
+     CUSTOM CURSOR — pink glowing dot + ring
+  ═══════════════════════════════════════════ */
+  (function() {
+    const dot  = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mx = -100, my = -100, rx = -100, ry = -100;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left = mx + 'px';
+      dot.style.top  = my + 'px';
+    });
+
+    function trackRing() {
+      rx += (mx - rx) * 0.14;
+      ry += (my - ry) * 0.14;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(trackRing);
+    }
+    trackRing();
+
+    document.addEventListener('mousedown', () => {
+      dot.style.width = '6px'; dot.style.height = '6px';
+    });
+    document.addEventListener('mouseup', () => {
+      dot.style.width = ''; dot.style.height = '';
+    });
+  })();
+
+  /* ═══════════════════════════════════════════
+     PARTICLE BURST — pink particles on page transitions
+  ═══════════════════════════════════════════ */
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let animFrame;
+
+  function resizeCanvas() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const COLORS = ['#c95c8a','#b8489e','#a03aab','#F1B5CB','#E88EED','#F4C3C2','#f8b4d9','#e064aa'];
+
+  function spawnBurst(originX, originY, count = 60) {
+    for (let i = 0; i < count; i++) {
+      const angle  = Math.random() * Math.PI * 2;
+      const speed  = 3 + Math.random() * 9;
+      const radius = 3 + Math.random() * 5;
+      particles.push({
+        x: originX, y: originY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1.5,
+        r: radius,
+        alpha: 1,
+        decay: 0.013 + Math.random() * 0.018,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        gravity: 0.18 + Math.random() * 0.12,
+        wobble: (Math.random() - 0.5) * 0.3,
+      });
+    }
+    if (!animFrame) tick();
+  }
+
+  function spawnEdgeBurst() {
+    /* scatter particles from random spots across the viewport */
+    const spots = 8;
+    for (let i = 0; i < spots; i++) {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height;
+      spawnBurst(x, y, 12);
+    }
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles = particles.filter(p => p.alpha > 0.02);
+
+    for (const p of particles) {
+      p.x  += p.vx;
+      p.y  += p.vy;
+      p.vy += p.gravity;
+      p.vx += p.wobble;
+      p.alpha -= p.decay;
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.alpha);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      /* soft glow */
+      ctx.shadowBlur  = p.r * 3;
+      ctx.shadowColor = p.color;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    if (particles.length > 0) {
+      animFrame = requestAnimationFrame(tick);
+    } else {
+      animFrame = null;
+    }
+  }
+
+  /* ═══════════════════════════════════════════
+     PAGE NAVIGATION — curtain slide transition
+  ═══════════════════════════════════════════ */
+  function showPage(id, el) {
+    const current = document.querySelector('.page.active');
+    const next    = document.getElementById('page-' + id);
+    if (current === next) return;
+
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    /* particle burst from nav link */
+    if (el) {
+      const r = el.getBoundingClientRect();
+      spawnBurst(r.left + r.width / 2, r.top + r.height / 2, 45);
+    }
+
+    const curtain = document.getElementById('curtain');
+
+    /* STEP 1 — curtain sweeps in from left */
+    curtain.style.transition = 'none';
+    curtain.style.left = '-100%';
+    curtain.offsetHeight; /* force reflow */
+    curtain.classList.remove('sweep-out');
+    curtain.classList.add('sweep-in');
+
+    setTimeout(() => {
+      /* STEP 2 — swap pages while curtain is fully covering screen */
+      current.classList.remove('active');
+      next.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      initReveal();
+
+      /* STEP 3 — curtain sweeps out to right */
+      curtain.classList.remove('sweep-in');
+      curtain.classList.add('sweep-out');
+
+      setTimeout(() => {
+        curtain.style.left = '-100%';
+        curtain.classList.remove('sweep-out');
+        spawnBurst(canvas.width / 2, canvas.height * 0.35, 28);
+      }, 400);
+    }, 400);
+  }
+
+  /* ═══════════════════════════════════════════
+     ACCORDION
+  ═══════════════════════════════════════════ */
+  function toggleAcc(header) {
+    const item    = header.parentElement;
+    const wasOpen = item.classList.contains('open');
+    item.classList.toggle('open', !wasOpen);
+  }
+
+  /* ═══════════════════════════════════════════
+     SCROLL REVEAL — sections fade up on scroll
+  ═══════════════════════════════════════════ */
+  function initReveal() {
+    /* tag elements inside the active page */
+    const page = document.querySelector('.page.active');
+    if (!page) return;
+    page.querySelectorAll('.section, .hero-left, .hero-right, .acc-item, .info-card, .stat-block, .contact-item, .section-header').forEach((el, i) => {
+      if (!el.classList.contains('reveal')) {
+        el.classList.add('reveal');
+        el.style.transitionDelay = (i % 6) * 0.07 + 's';
+      }
+    });
+    checkReveal();
+  }
+
+  function checkReveal() {
+    const page = document.querySelector('.page.active');
+    if (!page) return;
+    const vh = window.innerHeight;
+    page.querySelectorAll('.reveal:not(.visible)').forEach(el => {
+      const top = el.getBoundingClientRect().top;
+      if (top < vh * 0.93) el.classList.add('visible');
+    });
+  }
+
+  window.addEventListener('scroll', checkReveal, { passive: true });
+
+  /* initial sparkle + reveal on load */
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      spawnBurst(canvas.width / 2, canvas.height * 0.4, 40);
+      initReveal();
+    }, 300);
+  });
+</script>
+</body>
+</html>
