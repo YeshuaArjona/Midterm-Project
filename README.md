@@ -1,3 +1,4 @@
 # Midterm-Project
-(PUBLISHED LINK and HTML File)
+PUBLISHED LINK: https://yeshuaarjonaeportfolio.netlify.app/
+HTML File
 E-Portfolio for Object-Oriented Programming
